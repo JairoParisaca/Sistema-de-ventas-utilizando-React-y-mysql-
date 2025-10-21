@@ -17,6 +17,6 @@
 - [x] Ensure responsive design
 
 ## Testing and Documentation
-- [ ] Test full application functionality
-- [ ] Create/update README.md with installation and execution instructions
-- [ ] Commit and push code to GitHub repository
+- [x] Test full application functionality
+- [x] Create/update README.md with installation and execution instructions
+- [x] Commit and push code to GitHub repository
