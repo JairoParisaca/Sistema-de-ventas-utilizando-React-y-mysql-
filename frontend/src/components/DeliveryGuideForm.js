@@ -11,7 +11,9 @@ import {
   InputLabel,
   Alert,
   Grid,
+  IconButton,
 } from '@mui/material';
+import { PhotoCamera } from '@mui/icons-material';
 import { deliveryGuidesAPI } from '../services/api';
 
 const DeliveryGuideForm = ({ guide, onSave, onCancel }) => {
@@ -30,6 +32,8 @@ const DeliveryGuideForm = ({ guide, onSave, onCancel }) => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
 
   useEffect(() => {
     if (guide) {
@@ -71,6 +75,16 @@ const DeliveryGuideForm = ({ guide, onSave, onCancel }) => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => setFilePreview(e.target.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -80,7 +94,7 @@ const DeliveryGuideForm = ({ guide, onSave, onCancel }) => {
       if (guide) {
         await deliveryGuidesAPI.update(guide.id, formData);
       } else {
-        await deliveryGuidesAPI.create(formData);
+        await deliveryGuidesAPI.create(formData, selectedFile);
       }
       onSave();
     } catch (err) {
@@ -228,6 +242,38 @@ const DeliveryGuideForm = ({ guide, onSave, onCancel }) => {
               rows={3}
               fullWidth
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography variant="body1">Foto del Recibo (Opcional)</Typography>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="receipt-file"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="receipt-file">
+                <IconButton color="primary" component="span">
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+              {selectedFile && (
+                <Typography variant="body2" color="textSecondary">
+                  {selectedFile.name}
+                </Typography>
+              )}
+            </Box>
+            {filePreview && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <img
+                  src={filePreview}
+                  alt="Vista previa del recibo"
+                  style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px' }}
+                />
+              </Box>
+            )}
           </Grid>
         </Grid>
 

@@ -13,7 +13,22 @@ const api = axios.create({
 export const deliveryGuidesAPI = {
   getAll: () => api.get('/delivery-guides'),
   getById: (id) => api.get(`/delivery-guides/${id}`),
-  create: (data) => api.post('/delivery-guides', data),
+  create: (data, file = null) => {
+    if (file) {
+      const formData = new FormData();
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key]);
+      });
+      formData.append('receipt', file);
+      return api.post('/delivery-guides', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    } else {
+      return api.post('/delivery-guides', data);
+    }
+  },
   update: (id, data) => api.put(`/delivery-guides/${id}`, data),
   delete: (id) => api.delete(`/delivery-guides/${id}`),
   uploadReceipt: (id, file) => {
