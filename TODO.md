@@ -12,7 +12,7 @@
 
 ## Frontend Setup
 - [x] Create React app
-- [x] Install frontend dependencies (axios, material-ui or bootstrap)
+- [x] Install frontend dependencies (axios, @mui/material, @emotion/react, @emotion/styled, @mui/icons-material, react-scripts)
 - [x] Implement components: Forms for delivery guides, file upload, list view
 - [x] Ensure responsive design
 
@@ -20,3 +20,10 @@
 - [x] Test full application functionality
 - [x] Create/update README.md with installation and execution instructions
 - [x] Commit and push code to GitHub repository
+
+## Bug Fixes and Improvements
+- [ ] Fix database schema structure (add proper relationships and constraints)
+- [ ] Fix CRUD operations (create and update not working)
+- [ ] Translate UI to Spanish
+- [ ] Improve responsive design
+- [ ] Add proper error handling and validation

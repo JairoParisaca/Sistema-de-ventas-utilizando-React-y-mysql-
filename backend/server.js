@@ -63,22 +63,92 @@ app.get('/api/delivery-guides/:id', (req, res) => {
 
 // Create new delivery guide
 app.post('/api/delivery-guides', (req, res) => {
-  const { order_id, customer_name, address, status } = req.body;
-  const query = 'INSERT INTO delivery_guides (order_id, customer_name, address, status) VALUES (?, ?, ?, ?)';
-  db.query(query, [order_id, customer_name, address, status], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(201).json({ id: result.insertId, message: 'Delivery guide created successfully' });
+  const {
+    order_id,
+    customer_name,
+    customer_email,
+    customer_phone,
+    address,
+    city,
+    postal_code,
+    delivery_date,
+    delivery_time,
+    status,
+    notes
+  } = req.body;
+
+  const query = `INSERT INTO delivery_guides
+    (order_id, customer_name, customer_email, customer_phone, address, city, postal_code, delivery_date, delivery_time, status, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.query(query, [
+    order_id || null,
+    customer_name,
+    customer_email || null,
+    customer_phone || null,
+    address,
+    city || null,
+    postal_code || null,
+    delivery_date || null,
+    delivery_time || null,
+    status || 'pending',
+    notes || null
+  ], (err, result) => {
+    if (err) {
+      console.error('Error creating delivery guide:', err);
+      return res.status(500).json({ error: 'Error al crear la guía de entrega', details: err.message });
+    }
+    res.status(201).json({
+      id: result.insertId,
+      message: 'Guía de entrega creada exitosamente'
+    });
   });
 });
 
 // Update delivery guide
 app.put('/api/delivery-guides/:id', (req, res) => {
-  const { order_id, customer_name, address, status } = req.body;
-  const query = 'UPDATE delivery_guides SET order_id = ?, customer_name = ?, address = ?, status = ? WHERE id = ?';
-  db.query(query, [order_id, customer_name, address, status, req.params.id], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (result.affectedRows === 0) return res.status(404).json({ message: 'Delivery guide not found' });
-    res.json({ message: 'Delivery guide updated successfully' });
+  const {
+    order_id,
+    customer_name,
+    customer_email,
+    customer_phone,
+    address,
+    city,
+    postal_code,
+    delivery_date,
+    delivery_time,
+    status,
+    notes
+  } = req.body;
+
+  const query = `UPDATE delivery_guides SET
+    order_id = ?, customer_name = ?, customer_email = ?, customer_phone = ?,
+    address = ?, city = ?, postal_code = ?, delivery_date = ?, delivery_time = ?,
+    status = ?, notes = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?`;
+
+  db.query(query, [
+    order_id || null,
+    customer_name,
+    customer_email || null,
+    customer_phone || null,
+    address,
+    city || null,
+    postal_code || null,
+    delivery_date || null,
+    delivery_time || null,
+    status || 'pending',
+    notes || null,
+    req.params.id
+  ], (err, result) => {
+    if (err) {
+      console.error('Error updating delivery guide:', err);
+      return res.status(500).json({ error: 'Error al actualizar la guía de entrega', details: err.message });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Guía de entrega no encontrada' });
+    }
+    res.json({ message: 'Guía de entrega actualizada exitosamente' });
   });
 });
 

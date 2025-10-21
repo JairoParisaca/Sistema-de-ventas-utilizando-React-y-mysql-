@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Container, Typography, Button, Box, AppBar, Toolbar } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Add, ArrowBack } from '@mui/icons-material';
 import DeliveryGuideList from './components/DeliveryGuideList';
 import DeliveryGuideForm from './components/DeliveryGuideForm';
 
@@ -28,7 +28,7 @@ function App() {
 
   const handleEditGuide = (guide) => {
     setEditingGuide(guide);
-    setRefreshTrigger(prev => prev + 1);
+    setCurrentView('form');
   };
 
   const handleSave = () => {
@@ -46,6 +46,16 @@ function App() {
       <CssBaseline />
       <AppBar position="static">
         <Toolbar>
+          {currentView === 'form' && (
+            <Button
+              color="inherit"
+              startIcon={<ArrowBack />}
+              onClick={handleCancel}
+              sx={{ mr: 2 }}
+            >
+              Volver
+            </Button>
+          )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Sistema de Gestión de Entregas
           </Typography>
