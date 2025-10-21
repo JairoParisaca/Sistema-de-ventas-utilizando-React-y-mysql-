@@ -22,8 +22,8 @@
 - [x] Commit and push code to GitHub repository
 
 ## Bug Fixes and Improvements
-- [ ] Fix database schema structure (add proper relationships and constraints)
-- [ ] Fix CRUD operations (create and update not working)
-- [ ] Translate UI to Spanish
-- [ ] Improve responsive design
-- [ ] Add proper error handling and validation
+- [x] Fix database schema structure (add proper relationships and constraints)
+- [x] Fix CRUD operations (create and update not working)
+- [x] Translate UI to Spanish
+- [x] Improve responsive design
+- [x] Add proper error handling and validation
